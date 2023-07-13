@@ -1,3 +1,3 @@
-# Nonverbal_Query_based_scene_detection
+# Nonverbal_Query_Based_Scene_Detection
 
 ## Introduction
