@@ -44,15 +44,39 @@
 <br>
 
 
+## 3. MMV
+### (1) 데이터셋 준비(Data Setup)
+Detecting Moments and Highlights in Videos via Natural Language Queries 논문에서 제공하는 Open Dataset인 QVGHIGHLIGHTS이라는 데이터셋으로 비디오와 비디오 장면의 상황적 특징을 설명하는 텍스트가 짝을 지어 연결되어 annotation되어 이으므로, MMV multimodal proj_head를 학습시키기에 적합하다고 판단되어 사용
+- Query : 10,310
+- Video : 10,148
+- Moment : 18,367
+- Category : 일상 블로그, 여행 블로그, 뉴스 이벤트 등
 
+### (2) 데이터 전처리 (Data Preprocessing)
+#### 1) Video
+- MMV 논문에서 제안한 Proj_head에 들어갈 input_data의 데이터 전처리를 진행한다.
+- qvhighlights dataset의 raw video
+- MMV module을 불러와 preprocessing을 진행
+#### 2) Audio
+- MMV 논문에서 제안한 Proj_head에 들어갈 input_data의 데이터 전처리를 진행한다.
+- qvhighlights dataset의 raw video에서 추출한 raw audio
+- MMV module을 불러와 preprocessing을 진행
+#### 3) Text
+- MMV 논문에서 제안한 Proj_head에 들어갈 input_data의 데이터 전처리를 진행한다.
+- lower, tokenization, rm stop words, pad to 16을 진행
+- qvhighlights dataset의 json 파일에서 query와 vid를 dict화 하여 진행
+#### 4) Feature Extract
+- 앞서 정의한 class와 def을 바탕으로, feature 추출
+#### 5) projection_head를 위한 feature_dataset
+- Backbone을 통해 추출한 feature vector npy파일들을 훈련에 사용할 수 있는 형태로 바꾸고자 한다.
+- 각 npy 파일을 하나의 numpy array로 합쳐준다(concatenate)
 
-## MMV
-### 
+### (3) 학습 모델 훈련 (Train Model)
+- Common project space에서 proj_head를 학습하기 위해 Torch를 이용하여 모델을 구축하고자 한다.
+- proj_head는 mmv 논문에서 제안한 구조를 참고하여 구성함
+- proj_head를 NCELoss로 학습하기 위해 Loss 함수를 구축하고자 한다.
+- 정답 레이블은 본 프로젝트에서 제안한 같은 인덱스에서 나온 비디오, 오디오, 텍스트의 쌍을 통해 구성한다.
 
-
-
-
-
-
-
-## Moment-DETR
+### (4) 추론(Inference)
+- 훈련시킨 모델을 통해 순위를 매겨 사용자에게 제공하고자 한다. SceneDetection을 통해 비디오, 오디오 특징 벡터를 추출하고 사용자의 query를 받아 텍스트 특징 벡터를 추출하여 MMV 모델을 통해 사용자의 쿼리를 고려한 영상의 인덱스를 순위로 반환하여 준다.
+- 실험 결과를 통해 비디오-오디오는 영향이 적어 비디오-텍스트의 유사도만 반영
