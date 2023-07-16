@@ -13,13 +13,9 @@
 ## Shot-Scene Detection
 ### 순서
 1. Raw Videos --> ILSD Shot Detection --> Shot Boundary Return (txt file)
-2. Shot boundary 각 shot 별 중간 frame을 가져옴<br>
+2. Shot boundary 각 shot 별 중간 frame을 가져옴
 - For each video, we perform shot boundary detection and extract a center image for the visual representation fed into the Inception network.
-    
-    (0, 13)  ->  (0 + 13) / 2
-    (35, 50) ->  (35 + 50) / 2     =====>    [f1, f2, f3, f4, ...]
-    ...
-
+![이미지](/img/example_shot_scene_detection.png)
 4. 가져온 frame을 가지고 video에서 frame 추출 -> 추출한 frame을 가지고 inception v3 network에 넣는다.
 5. 각 frame 별 2048개의 feature 존재 -> hs file로 저장
 6. hs file을 이용해서 05G 수행 -> 최종 SCENE Boundary 추촌
