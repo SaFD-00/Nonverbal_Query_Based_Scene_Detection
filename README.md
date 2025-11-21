@@ -23,8 +23,6 @@
    - [Data Preprocessing](#32-data-preprocessing)
    - [Training](#33-학습-모델-훈련-train-model)
    - [Inference](#34-추론inference)
-4. [Repository Structure (예시)](#4-repository-structure-예시)
-5. [TODO](#5-todo)
 
 ---
 
